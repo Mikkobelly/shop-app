@@ -23,7 +23,7 @@ const ProductDetails = ({ products, onAddClick, countClick }) => {
             <p>Currency: {variants.edges[0].node.price.currencyCode}</p>
             <div className="details__btns">
                 <button className="details__add-btn" onClick={() => { onAddClick(product); countClick(); }}>Add to Cart</button>
-                <Link to={`/shop-app/products`}>
+                <Link to={`/products`}>
                     <button className="details__back-btn">Back</button>
                 </Link>
             </div>

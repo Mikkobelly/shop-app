@@ -70,14 +70,14 @@ function App() {
       <div className="App">
         <Routes>
           <Route
-            path="/shop-app"
+            path="/"
             element={
               <><p>Home page</p></>
             }
           />
 
           <Route
-            path="/shop-app/products"
+            path="/products"
             element={
               <>
                 <div className="flex--left">
@@ -105,7 +105,7 @@ function App() {
           />
 
           <Route
-            path="shop-app/products/:productTitle"
+            path="/products/:productTitle"
             element={
               <>
                 <div className="flex--left">
