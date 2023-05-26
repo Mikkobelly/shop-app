@@ -1,7 +1,15 @@
 import React from 'react'
 import '../App.css';
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
-const ProductDetails = ({ product, onAddClick, countClick, onBackClick }) => {
+
+const ProductDetails = ({ products, onAddClick, countClick }) => {
+    console.log(products)
+    let { productTitle } = useParams();
+    productTitle = decodeURIComponent(productTitle)
+    const product = products.find(item => item.node.title === productTitle);
+    console.log(productTitle)
     const { title, description, featuredImage, variants } = product.node;
 
     return (
@@ -15,7 +23,9 @@ const ProductDetails = ({ product, onAddClick, countClick, onBackClick }) => {
             <p>Currency: {variants.edges[0].node.price.currencyCode}</p>
             <div className="details__btns">
                 <button className="details__add-btn" onClick={() => { onAddClick(product); countClick(); }}>Add to Cart</button>
-                <button className="details__back-btn" onClick={onBackClick}>Back</button>
+                <Link to={`/shop-app/products`}>
+                    <button className="details__back-btn">Back</button>
+                </Link>
             </div>
         </div>
     )

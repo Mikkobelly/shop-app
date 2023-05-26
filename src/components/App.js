@@ -1,12 +1,12 @@
 // import './App.css';
 import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProductCard from './ProductCard';
 import ProductDetails from './ProductDetails';
 import Basket from './Basket';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [basketItems, setBasketItems] = useState([]);
   const [clickCount, setClickCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -66,38 +66,71 @@ function App() {
 
 
   return (
-    <div className="App">
-      <div className="flex--left">
-        {selectedProduct ?
-          <ProductDetails
-            product={selectedProduct}
-            onAddClick={handleAdd}
-            countClick={() => setClickCount(clickCount + 1)}
-            onBackClick={() => setSelectedProduct(null)}
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/shop-app"
+            element={
+              <><p>Home page</p></>
+            }
           />
-          : <div className="card__grid">
-            {products.map((item, i) => (
-              <ProductCard
-                key={i}
-                product={item}
-                onProductClick={(selected) => setSelectedProduct(selected)}
-                onAddClick={handleAdd}
-                countClick={() => setClickCount(clickCount + 1)}
-              />))}
-          </div>
-        }
-      </div>
 
-      <div className="flex--right">
-        <Basket
-          basketItems={basketItems}
-          totalPrice={totalPrice}
-          onAddClick={handleAdd}
-          onRemoveClick={handleRemove}
-          countClick={() => setClickCount(clickCount + 1)}
-        />
+          <Route
+            path="/shop-app/products"
+            element={
+              <>
+                <div className="flex--left">
+                  <div className="card__grid">
+                    {products.map((item, i) => (
+                      <ProductCard
+                        key={i}
+                        product={item}
+                        onAddClick={handleAdd}
+                        countClick={() => setClickCount(clickCount + 1)}
+                      />))}
+                  </div>
+                </div>
+                <div className="flex--right">
+                  <Basket
+                    basketItems={basketItems}
+                    totalPrice={totalPrice}
+                    onAddClick={handleAdd}
+                    onRemoveClick={handleRemove}
+                    countClick={() => setClickCount(clickCount + 1)}
+                  />
+                </div>
+              </>
+            }
+          />
+
+          <Route
+            path="shop-app/products/:productTitle"
+            element={
+              <>
+                <div className="flex--left">
+                  <ProductDetails
+                    products={products}
+                    onAddClick={handleAdd}
+                    countClick={() => setClickCount(clickCount + 1)}
+                  />
+                </div>
+                <div className="flex--right">
+                  <Basket
+                    basketItems={basketItems}
+                    totalPrice={totalPrice}
+                    onAddClick={handleAdd}
+                    onRemoveClick={handleRemove}
+                    countClick={() => setClickCount(clickCount + 1)}
+                  />
+                </div>
+              </>
+            }
+          />
+
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
