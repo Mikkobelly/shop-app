@@ -1,38 +1,242 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.flex--left {
+  flex: 1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.flex--right {
+  width: 20%;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* --------------- ProductCard -------------------*/
+
+.card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+  padding: 2rem;
+}
+
+.card {
+  border: 1px solid #666;
+  border-radius: 3px;
+  box-shadow: 3px 3px 8px #777777af;
+  text-align: center;
+  padding: 2rem;
+}
+
+.card__title-btn {
+  background-color: #fff;
+  border: none;
+  transition: all .2s ease;;
+}
+
+.card__title-btn:hover {
+  color: rgb(12, 111, 12);
+  filter: brightness(1.3);
+}
+
+.card__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1rem;
+}
+
+.card__price,
+.details__price {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.card__add-btn,
+.details__add-btn,
+.details__back-btn {
+  padding: .5rem 1rem;
+  border: none;
+  border-radius: 2px;
+  background-color: rgb(250, 119, 4);
+  color: #fff;
+  margin-bottom: 1rem;
+  transition: all .2s ease;
+}
+
+.card__add-btn:hover,
+.details__add-btn:hover,
+.details__back-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.3);
+}
+
+.card__add-btn:active,
+.details__add-btn:active,
+.details__back-btn:active {
+  transform: translateY(2px);
+}
+
+/* --------------- ProductDetails -------------------*/
+
+.details {
+  max-width: 70rem;
+  margin: 2rem;
+  text-align: center;
+  border: 1px solid #777;
+  border-radius: 3px;
+  box-shadow: 3px 3px 8px #777777af;
+}
+
+.details .description {
+  width: 60%;
+  margin: 2.5rem auto;
+}
+
+.details__add-btn {
+  margin-right: .8rem;
+}
+
+.details__back-btn {
+  background-color: rgb(85, 147, 85);
+}
+
+/* ------------------- Basket -----------------------*/
+
+.basket {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 2rem 2rem 0;
+  border: 1px solid #777;
+  border-radius: 3px;
+  position: sticky;
+  top: 0;
+}
+
+.basket__title {
+  text-align: center
+}
+
+.basket__title,
+.basket__total {
+  margin: 0;
+  padding: 1rem 2rem;
+}
+
+.basket li {
+  padding: .8rem 1rem;
+  border-bottom: 1px solid #aaa;
+}
+
+.basket li p {
+  margin: .8rem 0;
+}
+
+.basket li p:last-child {
+  margin-bottom: 0;
+}
+
+.basket__btns {
+  display: inline-block;
+  margin-left: .5rem;
+  margin-top: .2rem;
+}
+
+.basket__btns button {
+  font-size: 1rem;
+  background-color: rgb(215, 233, 215);
+  border: 1px solid #777;
+  border-radius: 2px;
+  color: #555;
+  transition: all .2s ease;
+}
+
+.basket__btns button:hover {
+  filter: brightness(1.05);
+}
+
+.basket__btns button:first-child {
+  margin-right: .2rem;
+}
+
+.basket__checkout {
+  text-align: center;
+  padding: 0 .5rem;
+}
+
+.basket__checkout-btn {
+  padding: .5rem 1rem;
+  border: none;
+  border-radius: 2px;
+  background-color: rgb(12, 111, 12);
+  color: #fff;
+  margin-bottom: 1rem;
+  transition: all .2s ease;
+}
+
+.basket__checkout-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.4);
+}
+
+.basket__checkout-btn:active {
+  transform: translateY(2px);
+}
+
+
+/* ---------- Media Queries ------------- */
+
+@media all and (max-width: 67.5em) {
+  .card__grid {
+    grid-gap: 1.5rem;
+    padding: 1.5rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .details {
+    margin: 1.5rem;
+  }
+
+  .basket {
+    margin: 1.5rem 1.5rem 1.5rem 0;
+  }
+}
+
+@media all and (max-width: 51.875em) {
+  .flex--right {
+    width: 30%;
+  }
+
+  .card__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media all and (max-width: 35.625em) {
+  .flex--right {
+    width: 35%;
+  }
+
+  .details__title {
+    margin: 1rem;
+  }
+  
+  .details .description {
+    width: 80%;
+    margin: 1rem auto;
+  }
+
+  .basket__title,
+  .basket__total {
+    padding: 1rem;
+  }
+
+  .basket__checkout {
+    padding: 0 .1rem;
   }
 }
