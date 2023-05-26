@@ -66,7 +66,7 @@ function App() {
 
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/shop-app">
       <div className="App">
         <Routes>
           <Route
