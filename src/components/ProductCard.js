@@ -10,7 +10,7 @@ const ProductCard = ({ product, onAddClick, countClick }) => {
             <div>
                 <img src={featuredImage.url} alt={title} width="200px"></img>
             </div>
-            <Link to={`${encodeURIComponent(title)}`}>
+            <Link to={`/products/${encodeURIComponent(title)}`}>
                 <button className="card__title-btn">
                     <p className="card__title">{title}</p>
                 </button>
