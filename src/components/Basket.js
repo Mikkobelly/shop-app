@@ -1,7 +1,7 @@
 import React from 'react'
 import '../App.css'
 
-export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, countClick }) {
+export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
     return (
         <ul className="basket">
             <h3 className="basket__title">Basket</h3>
@@ -12,8 +12,8 @@ export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveCl
                     <p>
                         quantity: <span>{item.quantity}</span>
                         <div className="basket__btns">
-                            <button onClick={() => { onAddClick(item); countClick(); }}>+</button>
-                            <button onClick={() => { onRemoveClick(item); countClick(); }}>-</button>
+                            <button onClick={() => { onAddClick(item); }}>+</button>
+                            <button onClick={() => { onRemoveClick(item); }}>-</button>
                         </div>
                     </p>
                     <p>value: <span>${item.totalVal}</span></p>
