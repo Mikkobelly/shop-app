@@ -182,7 +182,8 @@ button {
   border-bottom: 1px solid #aaa;
 }
 
-.basket li p {
+.basket li p,
+.basket li div {
   margin: .8rem 0;
 }
 

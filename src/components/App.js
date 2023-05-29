@@ -35,6 +35,11 @@ function App() {
               variants(first: 3) {
                 edges {
                   node {
+                    id
+                    title
+                    image {
+                      url
+                    }
                     price {
                       amount
                       currencyCode
@@ -55,7 +60,7 @@ function App() {
       const getAll = await fetch(`https://mock.shop/api?query=${encodeURIComponent(query)}`);
       const resAll = await getAll.json();
       const { edges, pageInfo } = resAll.data.products;
-      // console.log('resAll: ', resAll)
+      console.log('setting products: ', edges)
       setProducts(edges);
       setEndCursor(`"${pageInfo.endCursor}"`);
       setHasNextPage(pageInfo.hasNextPage);
@@ -96,37 +101,60 @@ function App() {
   }
 
   // Run when item added to the basket
-  const handleAdd = (item) => {
+  const handleAdd = (item, variantId) => {
+    console.log('item, viriantId passed: ', item, variantId)
+    // Return if no valid item is passed
+    if (!item || !variantId) {
+      return;
+    }
+
     setBasketItems((prev) => {
-      const foundItem = prev.find(el => el.node.title === item.node.title); // Check if the selected item is already added to the basket
+      const foundItem = prev.find(el => el.varId === variantId); // Check if the selected item is already added to the basket
 
       if (foundItem) {
         foundItem.quantity++;
-        foundItem.totalVal += Number(foundItem.node.variants.edges[0].node.price.amount);
+        foundItem.totalVal += foundItem.price;
         return prev;
       } else {
-        item.quantity = 1;
-        item.totalVal = Number(item.node.variants.edges[0].node.price.amount);
-        return basketItems.length === 0 ? [item] : [...prev, item];
+        const { title, variants } = item.node;
+        let index;
+        variants.edges.forEach((el, i) => {
+          if (el.node.id === variantId) {
+            index = i;
+          }
+        })
+
+        const entry = {
+          varId: variants.edges[index].node.id,
+          title,
+          varTitle: variants.edges[index].node.title,
+          image: variants.edges[index].node.image.url,
+          price: Number(variants.edges[index].node.price.amount),
+          currencyCode: variants.edges[index].node.price.currencyCode,
+          quantity: 1,
+          totalVal: Number(variants.edges[index].node.price.amount)
+        }
+
+        return basketItems.length === 0 ? [entry] : [...prev, entry];
       }
     })
 
     setTotalPrice((prev) => {
-      return prev + Number(item.node.variants.edges[0].node.price.amount);
+      return prev + item.price || prev + Number(item.node.variants.edges[0].node.price.amount);
     });
   }
 
   // Run when item removed from the basket
-  const handleRemove = (item) => {
+  const handleRemove = (item, variantId) => {
     setBasketItems((prev) => {
-      const foundItem = prev.find(el => el.node.title === item.node.title);
+      const foundItem = prev.find(el => el.varId === variantId);
       foundItem.quantity--;
-      foundItem.totalVal -= Number(foundItem.node.variants.edges[0].node.price.amount);
+      foundItem.totalVal -= foundItem.price;
       return foundItem.quantity < 1 ? prev.filter(el => el !== foundItem) : prev;
     })
 
     setTotalPrice((prev) => {
-      return prev - Number(item.node.variants.edges[0].node.price.amount);
+      return prev - item.price;
     });
   }
 
