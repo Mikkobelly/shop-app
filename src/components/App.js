@@ -15,6 +15,7 @@ function App() {
   const [menProducts, setMenProducts] = useState([]);
   const [basketItems, setBasketItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedItem, setSelectedItem] = useState(null);
 
 
   const query = `query {
@@ -60,28 +61,26 @@ function App() {
       const getAll = await fetch(`https://mock.shop/api?query=${encodeURIComponent(query)}`);
       const resAll = await getAll.json();
       const { edges, pageInfo } = resAll.data.products;
-      console.log('setting products: ', edges)
       setProducts(edges);
       setEndCursor(`"${pageInfo.endCursor}"`);
       setHasNextPage(pageInfo.hasNextPage);
 
       // Get products in Featured Collection
-      const getFeatured = await fetch('https://mock.shop/api?query={collection(id:%20%22gid://shopify/Collection/429512622102%22){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{price%20{amount%20currencyCode}}}}}}}}}')
+      const getFeatured = await fetch('https://mock.shop/api?query={collection(id:%20%22gid://shopify/Collection/429512622102%22){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}')
       const resFeatured = await getFeatured.json();
       const dataFeatured = resFeatured.data.collection.products.edges;
       setFeaturedProducts(dataFeatured)
 
       // Get products in Women's Collection
       const encodedWomenId = encodeURIComponent('gid://shopify/Collection/429493813270');
-      const getWomen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedWomenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{price%20{amount%20currencyCode}}}}}}}}}`);
+      const getWomen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedWomenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
       const resWomen = await getWomen.json();
       const dataWomen = resWomen.data.collection.products.edges;
-      // console.log('data Women', dataWomen)
       setWomenProducts(dataWomen)
 
       // Get products in Men's Collection
       const encodedMenId = encodeURIComponent('gid://shopify/Collection/429493780502');
-      const getMen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedMenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{price%20{amount%20currencyCode}}}}}}}}}`);
+      const getMen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedMenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
       const resMen = await getMen.json();
       const dataMen = resMen.data.collection.products.edges;
       setMenProducts(dataMen)
@@ -102,9 +101,9 @@ function App() {
 
   // Run when item added to the basket
   const handleAdd = (item, variantId) => {
-    console.log('item, viriantId passed: ', item, variantId)
     // Return if no valid item is passed
     if (!item || !variantId) {
+      alert('Please choose one from the option.');
       return;
     }
 
@@ -139,9 +138,13 @@ function App() {
       }
     })
 
+    // Update total price in basket
     setTotalPrice((prev) => {
       return prev + item.price || prev + Number(item.node.variants.edges[0].node.price.amount);
     });
+
+    // Clear the selected option after adding the item to basket 
+    setSelectedItem(null)
   }
 
   // Run when item removed from the basket
@@ -156,6 +159,14 @@ function App() {
     setTotalPrice((prev) => {
       return prev - item.price;
     });
+  }
+
+  // Run when select input is changed to display the according image
+  const handleChange = (e, item) => {
+    const foundVariant = item.node.variants.edges.find((item) => {
+      return item.node.id === e.target.value
+    });
+    setSelectedItem(foundVariant);
   }
 
 
@@ -296,8 +307,10 @@ function App() {
                 <div className="page__flex">
                   <div className="flex--left">
                     <ProductDetails
-                      products={products}
+                      products={[...new Set([...products, ...featuredProducts, ...womenProducts, ...menProducts])]}
                       onAddClick={handleAdd}
+                      onSelectChange={handleChange}
+                      selectedItem={selectedItem}
                     />
                   </div>
                   <div className="flex--right">
