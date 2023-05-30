@@ -2,6 +2,7 @@ import '../App.css';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavigationBar from './NavigationBar';
+import Home from './Home';
 import ProductCard from './ProductCard';
 import ProductDetails from './ProductDetails';
 import Basket from './Basket';
@@ -179,7 +180,7 @@ function App() {
           <Route
             path="/"
             element={
-              <><p>Home page</p></>
+              <Home />
             }
           />
 
