@@ -165,7 +165,7 @@ footer p {
 }
 
 .card__grid a:hover .card {
-  box-shadow: 3px 3px 8px #777777af;
+  box-shadow: 2px 2px 8px #b5b5b5af;
 }
 
 .card__grid a:hover .card .card__img-box img {
@@ -249,7 +249,7 @@ footer p {
   align-items: center;
   border: none;
   border-radius: 3px;
-  box-shadow: 3px 3px 8px #777777af;
+  box-shadow: 2px 2px 8px #b5b5b5af;
 }
 
 .details__img-box {
@@ -299,13 +299,14 @@ footer p {
   margin: 2rem 2rem 2rem 0;
   border: none;
   border-radius: 3px;
-  box-shadow: 3px 3px 8px #777777af;
+  box-shadow: 2px 2px 8px #b5b5b5af;
   position: sticky;
   top: 5.2rem;
 }
 
 .basket__title {
   font-size: 1.6rem;
+  font-weight: 700;
   text-align: center
 }
 
@@ -317,7 +318,7 @@ footer p {
 
 .basket li {
   padding: .8rem 1rem;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #ddd;
 }
 
 .basket li p,
@@ -341,15 +342,16 @@ footer p {
 
 .basket__btns button {
   font-size: 1rem;
-  background-color: rgb(215, 233, 215);
+  background-color: #fff;
   border: 1px solid #777;
   border-radius: 2px;
-  color: #555;
+  color: #777;
   transition: all .2s ease;
 }
 
 .basket__btns button:hover {
-  filter: brightness(1.05);
+  background-color: #eee;
+  color: #555;
 }
 
 .basket__btns button:first-child {
@@ -365,7 +367,7 @@ footer p {
   padding: .5rem 1rem;
   border: none;
   border-radius: 2px;
-  background-color: rgb(85, 147, 85);
+  background-color: rgb(79, 136, 79);
   color: #fff;
   margin-bottom: 1rem;
   transition: all .2s ease;
