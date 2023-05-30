@@ -177,7 +177,7 @@ function App() {
 
 
   return (
-    <BrowserRouter basename="/shop-app">
+    <BrowserRouter>
       <NavigationBar />
 
       <div className="content">
