@@ -2,9 +2,9 @@
 
 ## Overview
 
-Live site: [shop-app](https://mikkobelly.github.io/shop-app/)
+Live site: [shop-app](https://fitfusion-shop-app.netlify.app/)
 
-Basic frontend of an ecommerce application built with React which displays list of products loaded from MockShop API<https://mock.shop/>. Details of each products can be seen upon clicking on the product name. 
+Basic frontend of an ecommerce application built with React which displays list of products loaded from MockShop API<https://mock.shop/> 
 
 ## User stories
 - *As an **online customer**, I need to **add a product to a mini basket**, so that **I can proceed to purchase**.*
