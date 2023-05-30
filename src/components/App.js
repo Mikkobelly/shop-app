@@ -55,6 +55,7 @@ function App() {
       }`;
 
 
+  /* eslint-disable */
   // Load products from MockShop API when opening the app
   useEffect(() => {
     async function fetchProducts() {
@@ -90,6 +91,7 @@ function App() {
 
     fetchProducts();
   }, [])
+  /* eslint-enable */
 
 
   // Run when Load More is clicked
