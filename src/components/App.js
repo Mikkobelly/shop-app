@@ -2,6 +2,8 @@ import '../App.css';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavigationBar from './NavigationBar';
+import Footer from './Footer';
+import Home from './Home';
 import ProductCard from './ProductCard';
 import ProductDetails from './ProductDetails';
 import Basket from './Basket';
@@ -174,12 +176,12 @@ function App() {
     <BrowserRouter basename="/shop-app">
       <NavigationBar />
 
-      <div className="App">
+      <div className="content">
         <Routes>
           <Route
             path="/"
             element={
-              <><p>Home page</p></>
+              <Home />
             }
           />
 
@@ -330,6 +332,7 @@ function App() {
 
         </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   );
 }
