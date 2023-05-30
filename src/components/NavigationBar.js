@@ -9,7 +9,7 @@ const NavigationBar = () => {
                 <Navbar.Brand as={Link} to="/">
                     <p className="logo">
                         {/* <img src="" alt="Shoppy logo" className="logo" /> */}
-                        Shoppy
+                        FitFusion
                     </p>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

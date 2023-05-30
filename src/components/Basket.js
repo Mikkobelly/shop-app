@@ -20,18 +20,18 @@ export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveCl
                     <img src={item.image} alt={item.title} width="35px"></img>
                     <p>{item.title}</p>
                     <p>{item.varTitle}</p>
-                    <div>
-                        quantity: <span>{item.quantity}</span>
+                    <div className="basket__quantity">
+                        <span className="basket__label">quantity: </span>{item.quantity}
                         <div className="basket__btns">
                             <button onClick={() => { onAddClick(item, item.varId); }}>+</button>
                             <button onClick={() => { onRemoveClick(item, item.varId); }}>-</button>
                         </div>
                     </div>
-                    <p>value: <span>${item.totalVal}</span></p>
+                    <p><span className="basket__label">value: </span>${item.totalVal}</p>
                 </li>
             ))}
             <p className="basket__total">
-                Total Value: <span>${totalPrice}</span>
+                <span className="basket__label">Total Value: </span>${totalPrice}
             </p>
             <div className="basket__checkout">
                 <button className="basket__checkout-btn">Checkout</button>

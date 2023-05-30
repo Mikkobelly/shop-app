@@ -198,7 +198,9 @@ function App() {
                           onAddClick={handleAdd}
                         />))}
                     </div>
-                    {hasNextPage !== false ? <button className="load" onClick={handleLoadMore}>Load More</button> : <></>}
+                    {hasNextPage !== false ? <div className="load-box"><button className="load" onClick={handleLoadMore}>Load More</button></div>
+                      : <></>
+                    }
                   </div>
                   <div className="flex--right">
                     <Basket
