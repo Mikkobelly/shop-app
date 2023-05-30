@@ -1,12 +1,10 @@
-import React from 'react';
 import { useParams } from "react-router";
 
-
 const ProductDetails = ({ products, onAddClick, onSelectChange, selectedItem }) => {
-    let { productTitle } = useParams();
-    productTitle = decodeURIComponent(productTitle)
+    const productTitle = decodeURIComponent(useParams().productTitle)
     const product = products.find(item => item.node.title === productTitle);
     const { title, description, featuredImage, variants } = product.node;
+    const selectOptions = document.querySelectorAll('#variants-select option');
 
     return (
         <div className="details">
@@ -19,14 +17,20 @@ const ProductDetails = ({ products, onAddClick, onSelectChange, selectedItem }) 
                 <p className="details__description">{description}</p>
                 <label htmlFor="variants-select">Options:</label>
                 <select name="variants" id="variants-select" onChange={(e) => onSelectChange(e, product)}>
-                    <option value="">--Please choose one--</option>
+                    <option value="" selected="selected">--Please choose one--</option>
                     {variants.edges.map((item, i) => (
                         <option key={i} value={item.node.id}>{item.node.title}</option>
                     ))}
                 </select>
                 <button
                     className="details__add"
-                    onClick={() => { onAddClick(product, selectedItem ? selectedItem.node.id : null); }}
+                    onClick={() => {
+                        onAddClick(product, selectedItem ? selectedItem.node.id : null);
+                        // Set the selected value back to the default option
+                        for (let i = 0; i < selectOptions.length; i++) {
+                            selectOptions[i].selected = selectOptions[i].defaultSelected;
+                        }
+                    }}
                 >Add to Cart
                 </button>
             </div>

@@ -19,7 +19,6 @@ function App() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
 
-
   const query = `query {
         products(first: 12, after: ${endCursor}) {
           pageInfo {
@@ -56,7 +55,7 @@ function App() {
       }`;
 
 
-  // Load all products from MockShop API
+  // Load products from MockShop API when opening the app
   useEffect(() => {
     async function fetchProducts() {
       // Get All products
@@ -68,7 +67,8 @@ function App() {
       setHasNextPage(pageInfo.hasNextPage);
 
       // Get products in Featured Collection
-      const getFeatured = await fetch('https://mock.shop/api?query={collection(id:%20%22gid://shopify/Collection/429512622102%22){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}')
+      const encodedFeaturedId = encodeURIComponent('gid://shopify/Collection/429512622102');
+      const getFeatured = await fetch(`https://mock.shop/api?query={collection(id:"${encodedFeaturedId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
       const resFeatured = await getFeatured.json();
       const dataFeatured = resFeatured.data.collection.products.edges;
       setFeaturedProducts(dataFeatured)
@@ -91,6 +91,7 @@ function App() {
     fetchProducts();
   }, [])
 
+
   // Run when Load More is clicked
   const handleLoadMore = async () => {
     const response = await fetch(`https://mock.shop/api?query=${encodeURIComponent(query)}`);
@@ -110,7 +111,8 @@ function App() {
     }
 
     setBasketItems((prev) => {
-      const foundItem = prev.find(el => el.varId === variantId); // Check if the selected item is already added to the basket
+      // Check if the selected item is already added to the basket
+      const foundItem = prev.find(el => el.varId === variantId);
 
       if (foundItem) {
         foundItem.quantity++;
@@ -329,9 +331,9 @@ function App() {
               </>
             }
           />
-
         </Routes>
       </div>
+
       <Footer />
     </BrowserRouter>
   );

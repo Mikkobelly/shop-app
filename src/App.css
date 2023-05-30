@@ -93,7 +93,7 @@ footer {
 }
 
 .icon-box a svg {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   fill: #777;
   transition: .2s all ease;
 }
@@ -207,7 +207,6 @@ footer p {
 
 .details__add {
   border: none;
-  /* background-color: rgb(250, 119, 4); */
   background-color: #f09800;
   color: #fff;
   margin-bottom: 1rem;
