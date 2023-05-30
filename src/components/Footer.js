@@ -4,13 +4,13 @@ function Footer() {
     return (
         <footer>
             <div className="icon-box">
-                <a href="https://www.instagram.com/">
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
                     <BsInstagram />
                 </a>
-                <a href="https://en-gb.facebook.com/">
+                <a href="https://en-gb.facebook.com/" target="_blank" rel="noopener noreferrer">
                     <BsFacebook />
                 </a>
-                <a href="https://twitter.com/Twitter">
+                <a href="https://twitter.com/Twitter" target="_blank" rel="noopener noreferrer">
                     <BsTwitter />
                 </a>
             </div>
