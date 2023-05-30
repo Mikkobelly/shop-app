@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 
@@ -8,7 +7,6 @@ const NavigationBar = () => {
             <Container>
                 <Navbar.Brand as={Link} to="/">
                     <p className="logo">
-                        {/* <img src="" alt="Shoppy logo" className="logo" /> */}
                         FitFusion
                     </p>
                 </Navbar.Brand>

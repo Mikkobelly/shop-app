@@ -1,16 +1,4 @@
-import React from 'react'
-
-// const entry = {
-//     varId: variants.edges[index].node.id,
-//     title,
-//     image: variants.edges[index].node.image.url,
-//     price: Number(variants.edges[index].node.price.amount),
-//     currencyCode: variants.edges[index].node.price.currencyCode,
-//     quantity: 1,
-//     totalVal: Number(variants.edges[index].node.price.amount)
-//   }
-
-export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
+function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
     return (
         <ul className="basket">
             <h3 className="basket__title">Basket</h3>
@@ -38,3 +26,5 @@ export default function Basket({ basketItems, totalPrice, onAddClick, onRemoveCl
         </ul>
     )
 }
+
+export default Basket
