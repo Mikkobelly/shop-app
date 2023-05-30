@@ -1,11 +1,20 @@
 html {
   width: 100%;
-  min-height: 100vh;
 }
 
 body {
   font-family: 'Roboto Mono', monospace;
   letter-spacing: 1px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
 }
 
 .page__flex {
@@ -62,6 +71,41 @@ button {
 .nav-link:hover,
 .nav-link:active {
   border-bottom: 1px solid rgb(85, 147, 85);
+}
+
+/* --------------- Footer -------------------*/
+
+footer {
+  text-align: center;
+}
+
+.icon-box {
+  margin-top: 3rem;
+}
+
+.icon-box a {
+  display: inline-block;
+  margin-right: 3rem;
+}
+
+.icon-box a:last-child {
+  margin-right: 0;
+}
+
+.icon-box a:hover svg {
+  fill: #333;
+}
+
+.icon-box a svg {
+  font-size: 1.5rem;
+  fill: #777;
+  transition: .2s all ease;
+}
+
+footer p {
+  font-size: .8rem;
+  margin: 1rem 0 3rem;
+  color: #777;
 }
 
 /* ------------------ Home ----------------------*/
@@ -403,6 +447,10 @@ button {
 
 /* 570px */
 @media all and (max-width: 35.625em) {
+  footer p {
+    font-size: .7rem;
+  }
+  
   .home div q {
     width: fit-content;
   }
