@@ -10,8 +10,8 @@ function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
                     <div className="basket__quantity">
                         <span className="basket__label">quantity: </span>{item.quantity}
                         <div className="basket__btns">
-                            <button onClick={() => { onAddClick(item, item.varId); }}>+</button>
                             <button onClick={() => { onRemoveClick(item, item.varId); }}>-</button>
+                            <button onClick={() => { onAddClick(item, item.varId); }}>+</button>
                         </div>
                     </div>
                     <p><span className="basket__label">value: </span>${item.totalVal}</p>
