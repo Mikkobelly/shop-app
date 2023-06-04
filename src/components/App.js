@@ -1,6 +1,7 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { queryAll, queryFeatured, queryWomen, queryMen } from './Data';
 import NavigationBar from './NavigationBar';
 import Footer from './Footer';
 import Home from './Home';
@@ -19,48 +20,13 @@ function App() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const query = `query {
-        products(first: 12, after: ${endCursor}) {
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-          edges {
-            node {
-              id
-              title
-              description
-              featuredImage {
-                id
-                url
-              }
-              variants(first: 3) {
-                edges {
-                  node {
-                    id
-                    title
-                    image {
-                      url
-                    }
-                    price {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }`;
-
-
   /* eslint-disable */
   // Load products from MockShop API when opening the app
   useEffect(() => {
     async function fetchProducts() {
       // Get All products
-      const getAll = await fetch(`https://mock.shop/api?query=${encodeURIComponent(query)}`);
+      const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
+      const getAll = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
       const resAll = await getAll.json();
       const { edges, pageInfo } = resAll.data.products;
       setProducts(edges);
@@ -68,22 +34,19 @@ function App() {
       setHasNextPage(pageInfo.hasNextPage);
 
       // Get products in Featured Collection
-      const encodedFeaturedId = encodeURIComponent('gid://shopify/Collection/429512622102');
-      const getFeatured = await fetch(`https://mock.shop/api?query={collection(id:"${encodedFeaturedId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
+      const getFeatured = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryFeatured)}`);
       const resFeatured = await getFeatured.json();
       const dataFeatured = resFeatured.data.collection.products.edges;
       setFeaturedProducts(dataFeatured)
 
       // Get products in Women's Collection
-      const encodedWomenId = encodeURIComponent('gid://shopify/Collection/429493813270');
-      const getWomen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedWomenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
+      const getWomen = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryWomen)}`);
       const resWomen = await getWomen.json();
       const dataWomen = resWomen.data.collection.products.edges;
       setWomenProducts(dataWomen)
 
       // Get products in Men's Collection
-      const encodedMenId = encodeURIComponent('gid://shopify/Collection/429493780502');
-      const getMen = await fetch(`https://mock.shop/api?query={collection(id:"${encodedMenId}"){id%20handle%20title%20description%20image%20{id%20url}%20products(first:%2020){edges%20{node%20{id%20title%20featuredImage%20{id%20url}%20description%20variants(first:%203){edges%20{node%20{id%20title%20image%20{url}price%20{amount%20currencyCode}}}}}}}}}`);
+      const getMen = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryMen)}`);
       const resMen = await getMen.json();
       const dataMen = resMen.data.collection.products.edges;
       setMenProducts(dataMen)
@@ -96,7 +59,8 @@ function App() {
 
   // Run when Load More is clicked
   const handleLoadMore = async () => {
-    const response = await fetch(`https://mock.shop/api?query=${encodeURIComponent(query)}`);
+    const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
+    const response = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
     const resAll = await response.json();
     const { edges, pageInfo } = resAll.data.products;
     setProducts((prev) => [...prev, ...edges])
