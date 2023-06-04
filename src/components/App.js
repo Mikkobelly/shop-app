@@ -36,7 +36,6 @@ function App() {
       // Get products in Featured Collection
       const getFeatured = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryFeatured)}`);
       const resFeatured = await getFeatured.json();
-      console.log(resFeatured)
       const dataFeatured = resFeatured.data.collection.products.edges;
       setFeaturedProducts(dataFeatured)
 
