@@ -1,4 +1,8 @@
-function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
+import { useContext } from "react";
+import { AppContext } from "./App";
+
+function Basket() {
+    const { basketItems, totalPrice, handleAdd, handleRemove } = useContext(AppContext);
     return (
         <ul className="basket">
             <h3 className="basket__title">Basket</h3>
@@ -10,8 +14,8 @@ function Basket({ basketItems, totalPrice, onAddClick, onRemoveClick, }) {
                     <div className="basket__quantity">
                         <span className="basket__label">quantity: </span>{item.quantity}
                         <div className="basket__btns">
-                            <button onClick={() => { onRemoveClick(item, item.varId); }}>-</button>
-                            <button onClick={() => { onAddClick(item, item.varId); }}>+</button>
+                            <button onClick={() => { handleRemove(item, item.varId); }}>-</button>
+                            <button onClick={() => { handleAdd(item, item.varId); }}>+</button>
                         </div>
                     </div>
                     <p><span className="basket__label">value: </span>${item.totalVal}</p>
