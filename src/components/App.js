@@ -1,13 +1,15 @@
 import '../App.css';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { queryAll, queryFeatured, queryWomen, queryMen } from './Data';
 import NavigationBar from './NavigationBar';
 import Footer from './Footer';
+import Main from './Main';
 import Home from './Home';
-import ProductCard from './ProductCard';
 import ProductDetails from './ProductDetails';
 import Basket from './Basket';
+
+export const AppContext = createContext();
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -144,161 +146,79 @@ function App() {
     <BrowserRouter>
       <NavigationBar />
 
-      <div className="content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home />
-            }
-          />
+      <AppContext.Provider
+        value={{ basketItems, totalPrice, handleAdd, handleRemove, selectedItem, handleChange }}
+      >
+        <div className="content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home />
+              }
+            />
 
-          <Route
-            path="/products"
-            element={
-              <>
-                <h1 className="page__head">All Prodcts</h1>
-                <div className="page__flex">
-                  <div className="flex--left">
-                    <div className="card__grid">
-                      {products.map((item, i) => (
-                        <ProductCard
-                          key={i}
-                          product={item}
-                          onAddClick={handleAdd}
-                        />))}
+            <Route
+              path="/products"
+              element={
+                <>
+                  <h1 className="page__head">All Prodcts</h1>
+                  <Main products={products} />
+                  {hasNextPage !== false ? <div className="load-box"><button className="load" onClick={handleLoadMore}>Load More</button></div>
+                    : <></>
+                  }
+                </>
+              }
+            />
+
+            <Route
+              path="/products/featured"
+              element={
+                <>
+                  <h1 className="page__head">Featured</h1>
+                  <Main products={featuredProducts} />
+                </>
+              }
+            />
+
+            <Route
+              path="/products/women"
+              element={
+                <>
+                  <h1 className="page__head">Women</h1>
+                  <Main products={womenProducts} />
+                </>
+              }
+            />
+
+            <Route
+              path="/products/men"
+              element={
+                <>
+                  <h1 className="page__head">Men</h1>
+                  <Main products={menProducts} />
+                </>
+              }
+            />
+
+            <Route
+              path="/products/:productTitle"
+              element={
+                <>
+                  <div className="page__flex">
+                    <div className="flex--left">
+                      <ProductDetails products={[...new Set([...products, ...featuredProducts, ...womenProducts, ...menProducts])]} />
                     </div>
-                    {hasNextPage !== false ? <div className="load-box"><button className="load" onClick={handleLoadMore}>Load More</button></div>
-                      : <></>
-                    }
-                  </div>
-                  <div className="flex--right">
-                    <Basket
-                      basketItems={basketItems}
-                      totalPrice={totalPrice}
-                      onAddClick={handleAdd}
-                      onRemoveClick={handleRemove}
-                    />
-                  </div>
-                </div>
-              </>
-            }
-          />
-
-          <Route
-            path="/products/featured"
-            element={
-              <>
-                <h1 className="page__head">Featured</h1>
-                <div className="page__flex">
-                  <div className="flex--left">
-                    <div className="card__grid">
-                      {featuredProducts.map((item, i) => (
-                        <ProductCard
-                          key={i}
-                          product={item}
-                          onAddClick={handleAdd}
-                        />))}
-                    </div>
-                  </div>
-                  <div className="flex--right">
-                    <Basket
-                      basketItems={basketItems}
-                      totalPrice={totalPrice}
-                      onAddClick={handleAdd}
-                      onRemoveClick={handleRemove}
-                    />
-                  </div>
-                </div>
-              </>
-            }
-          />
-
-          <Route
-            path="/products/women"
-            element={
-              <>
-                <h1 className="page__head">Women</h1>
-                <div className="page__flex">
-                  <div className="flex--left">
-                    <div className="card__grid">
-                      {womenProducts.map((item, i) => (
-                        <ProductCard
-                          key={i}
-                          product={item}
-                          onAddClick={handleAdd}
-                        />))}
+                    <div className="flex--right">
+                      <Basket />
                     </div>
                   </div>
-                  <div className="flex--right">
-                    <Basket
-                      basketItems={basketItems}
-                      totalPrice={totalPrice}
-                      onAddClick={handleAdd}
-                      onRemoveClick={handleRemove}
-                    />
-                  </div>
-                </div>
-              </>
-            }
-          />
-
-          <Route
-            path="/products/men"
-            element={
-              <>
-                <h1 className="page__head">Men</h1>
-                <div className="page__flex">
-                  <div className="flex--left">
-                    <div className="card__grid">
-                      {menProducts.map((item, i) => (
-                        <ProductCard
-                          key={i}
-                          product={item}
-                          onAddClick={handleAdd}
-                        />))}
-                    </div>
-                  </div>
-                  <div className="flex--right">
-                    <Basket
-                      basketItems={basketItems}
-                      totalPrice={totalPrice}
-                      onAddClick={handleAdd}
-                      onRemoveClick={handleRemove}
-                    />
-                  </div>
-                </div>
-              </>
-            }
-          />
-
-          <Route
-            path="/products/:productTitle"
-            element={
-              <>
-                <div className="page__flex">
-                  <div className="flex--left">
-                    <ProductDetails
-                      products={[...new Set([...products, ...featuredProducts, ...womenProducts, ...menProducts])]}
-                      onAddClick={handleAdd}
-                      onSelectChange={handleChange}
-                      selectedItem={selectedItem}
-                    />
-                  </div>
-                  <div className="flex--right">
-                    <Basket
-                      basketItems={basketItems}
-                      totalPrice={totalPrice}
-                      onAddClick={handleAdd}
-                      onRemoveClick={handleRemove}
-                    />
-                  </div>
-                </div>
-              </>
-            }
-          />
-        </Routes>
-      </div>
+                </>
+              }
+            />
+          </Routes>
+        </div>
+      </AppContext.Provider>
 
       <Footer />
     </BrowserRouter>
