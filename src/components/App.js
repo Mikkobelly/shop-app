@@ -12,12 +12,15 @@ import Basket from './Basket';
 export const AppContext = createContext();
 
 function App() {
+  // These states are kept here so that useEffect runs a callback for fetching data 
+  // when users visit the homepage and updates the states
   const [products, setProducts] = useState([]);
   const [endCursor, setEndCursor] = useState(null);
   const [hasNextPage, setHasNextPage] = useState(null);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [womenProducts, setWomenProducts] = useState([]);
   const [menProducts, setMenProducts] = useState([]);
+
   const [basketItems, setBasketItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -71,9 +74,10 @@ function App() {
   }
 
   // Run when item added to the basket
+  // This fn is defined here as it's needed in more than one component and it's passed as context
   const handleAdd = (item, variantId) => {
     // Return if no valid item is passed
-    if (!item || !variantId) {
+    if (!item || !variantId || variantId === 'default') {
       alert('Please choose one from the option.');
       return;
     }
@@ -133,21 +137,13 @@ function App() {
     });
   }
 
-  // Run when select input is changed to display the according image
-  const handleChange = (e, item) => {
-    const foundVariant = item.node.variants.edges.find((item) => {
-      return item.node.id === e.target.value
-    });
-    setSelectedItem(foundVariant);
-  }
-
 
   return (
     <BrowserRouter>
       <NavigationBar />
 
       <AppContext.Provider
-        value={{ basketItems, totalPrice, handleAdd, handleRemove, selectedItem, handleChange }}
+        value={{ basketItems, totalPrice, handleAdd, handleRemove, selectedItem, setSelectedItem }}
       >
         <div className="content">
           <Routes>
@@ -162,8 +158,7 @@ function App() {
               path="/products"
               element={
                 <>
-                  <h1 className="page__head">All Prodcts</h1>
-                  <Main products={products} />
+                  <Main products={products} title="All Products" />
                   {hasNextPage !== false ? <div className="load-box"><button className="load" onClick={handleLoadMore}>Load More</button></div>
                     : <></>
                   }
@@ -174,30 +169,21 @@ function App() {
             <Route
               path="/products/featured"
               element={
-                <>
-                  <h1 className="page__head">Featured</h1>
-                  <Main products={featuredProducts} />
-                </>
+                <Main products={featuredProducts} title="Featured" />
               }
             />
 
             <Route
               path="/products/women"
               element={
-                <>
-                  <h1 className="page__head">Women</h1>
-                  <Main products={womenProducts} />
-                </>
+                <Main products={womenProducts} title="Women" />
               }
             />
 
             <Route
               path="/products/men"
               element={
-                <>
-                  <h1 className="page__head">Men</h1>
-                  <Main products={menProducts} />
-                </>
+                <Main products={menProducts} title="Men" />
               }
             />
 
