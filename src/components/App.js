@@ -28,49 +28,104 @@ function App() {
   /* eslint-disable */
   // Load products from MockShop API when opening the app
   useEffect(() => {
-    async function fetchProducts() {
-      // Get All products
-      const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
-      const getAll = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
-      const resAll = await getAll.json();
-      const { edges, pageInfo } = resAll.data.products;
-      setProducts(edges);
-      setEndCursor(`"${pageInfo.endCursor}"`);
-      setHasNextPage(pageInfo.hasNextPage);
+    // Get All products
+    const getAll = async () => {
+      try {
+        const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
+        const res = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
 
-      // Get products in Featured Collection
-      const getFeatured = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryFeatured)}`);
-      const resFeatured = await getFeatured.json();
-      const dataFeatured = resFeatured.data.collection.products.edges;
-      setFeaturedProducts(dataFeatured)
+        if (!res.ok) {
+          throw new Error(`HTTP error occured when fetching all products. status: ${res.status}`)
+        }
 
-      // Get products in Women's Collection
-      const getWomen = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryWomen)}`);
-      const resWomen = await getWomen.json();
-      const dataWomen = resWomen.data.collection.products.edges;
-      setWomenProducts(dataWomen)
+        const dataAll = await res.json();
+        const { edges, pageInfo } = dataAll.data.products;
+        setProducts(edges);
+        setEndCursor(`"${pageInfo.endCursor}"`);
+        setHasNextPage(pageInfo.hasNextPage);
 
-      // Get products in Men's Collection
-      const getMen = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryMen)}`);
-      const resMen = await getMen.json();
-      const dataMen = resMen.data.collection.products.edges;
-      setMenProducts(dataMen)
+      } catch (e) {
+        console.log(e)
+      }
     }
 
-    fetchProducts();
+    // Get products in Featured Collection
+    const getFeatured = async () => {
+      try {
+        const res = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryFeatured)}`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP error occured when fetching featured products. status: ${res.status}`)
+        }
+
+        const resFeatured = await res.json();
+        const { edges } = resFeatured.data.collection.products;
+        setFeaturedProducts(edges)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    // Get products in Women's Collection
+    const getWomen = async () => {
+      try {
+        const res = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryWomen)}`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP error occured when fetching women products. status: ${res.status}`)
+        }
+
+        const resWomen = await res.json();
+        const { edges } = resWomen.data.collection.products;
+        setWomenProducts(edges)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    // Get products in Men's Collection
+    const getMen = async () => {
+      try {
+        const res = await fetch(`https://mock.shop/api?query=${encodeURIComponent(queryMen)}`);
+        const resMen = await res.json();
+
+        if (!res.ok) {
+          throw new Error(`HTTP occured when fetching men products. status: ${res.status}`)
+        }
+
+        const { edges } = resMen.data.collection.products;
+        setMenProducts(edges)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getAll();
+    getFeatured();
+    getWomen();
+    getMen();
   }, [])
   /* eslint-enable */
 
 
   // Run when Load More is clicked
   const handleLoadMore = async () => {
-    const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
-    const response = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
-    const resAll = await response.json();
-    const { edges, pageInfo } = resAll.data.products;
-    setProducts((prev) => [...prev, ...edges])
-    setEndCursor(`"${pageInfo.endCursor}"`);
-    setHasNextPage(pageInfo.hasNextPage);
+    try {
+      const query = encodeURIComponent(`first: 12, after: ${endCursor}`)
+      const res = await fetch(`https://mock.shop/api?query={products(${query}){${encodeURIComponent(queryAll)}}}`);
+
+      if (!res.ok) {
+        throw new Error(`HTTP error occured when fetching products. status: ${res.status}`)
+      }
+
+      const dataAll = await res.json();
+      const { edges, pageInfo } = dataAll.data.products;
+      setProducts((prev) => [...prev, ...edges])
+      setEndCursor(`"${pageInfo.endCursor}"`);
+      setHasNextPage(pageInfo.hasNextPage);
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   // Run when item added to the basket
@@ -118,9 +173,6 @@ function App() {
     setTotalPrice((prev) => {
       return prev + item.price || prev + Number(item.node.variants.edges[0].node.price.amount);
     });
-
-    // Clear the selected option after adding the item to basket 
-    setSelectedItem(null)
   }
 
   // Run when item removed from the basket

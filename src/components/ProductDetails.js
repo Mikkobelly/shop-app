@@ -41,6 +41,8 @@ const ProductDetails = ({ products }) => {
                     className="details__add"
                     onClick={() => {
                         handleAdd(product, selectedItem ? selectedItem.node.id : null);
+                        // Reset selected state after adding the item to basket 
+                        setSelectedItem(null);
                         // Set the selected value back to the default option
                         for (let i = 0; i < selectOptions.length; i++) {
                             selectOptions[i].selected = selectOptions[i].defaultSelected;
