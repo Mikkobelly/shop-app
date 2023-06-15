@@ -45,7 +45,7 @@ function App() {
         setHasNextPage(pageInfo.hasNextPage);
 
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     }
 
@@ -62,7 +62,7 @@ function App() {
         const { edges } = resFeatured.data.collection.products;
         setFeaturedProducts(edges)
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     }
 
@@ -79,7 +79,7 @@ function App() {
         const { edges } = resWomen.data.collection.products;
         setWomenProducts(edges)
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     }
 
@@ -96,7 +96,7 @@ function App() {
         const { edges } = resMen.data.collection.products;
         setMenProducts(edges)
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     }
 
@@ -124,7 +124,7 @@ function App() {
       setEndCursor(`"${pageInfo.endCursor}"`);
       setHasNextPage(pageInfo.hasNextPage);
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
